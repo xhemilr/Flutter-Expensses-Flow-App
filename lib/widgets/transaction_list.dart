@@ -11,66 +11,67 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      child: _userTransactions.isEmpty
-          ?
-      Column(
+    return _userTransactions.isEmpty
+        ?
+    LayoutBuilder(builder: (ctx, constraint){
+      return Column(
         children: [
           Text(
             'No Transactions added yet!',
             style: Theme.of(context).textTheme.headline6,
           ),
-          SizedBox(
-            height: 50,
-          ),
+//        SizedBox(
+//          height: 50,
+//        ),
           Container(
-            height: 400,
-            child: Image.asset(
-              'assets/images/waiting.png',
-              fit: BoxFit.cover,
-            )
+              height: constraint.maxHeight * 0.91,
+              child: Image.asset(
+                'assets/images/waiting.png',
+                fit: BoxFit.cover,
+              )
           )
         ],
-      )
-          :
-      ListView.builder(
-        itemCount: _userTransactions.length,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 5,
-            margin: EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 5
-            ),
-            child: ListTile(
-              leading: CircleAvatar(
-                radius: 30,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FittedBox(
-                    child: Text(
-                      '\$${_userTransactions[index].amount}'
-                    ),
+      );
+      },
+    )
+        :
+    ListView.builder(
+      itemCount: _userTransactions.length,
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 5,
+          margin: EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 5
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              radius: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FittedBox(
+                  child: Text(
+                    '\$${_userTransactions[index].amount}'
                   ),
                 ),
               ),
-              title: Text(
-                _userTransactions[index].title,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              subtitle: Text(
-                DateFormat.yMMMd().format(_userTransactions[index].date)
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.delete
-                ),
-                color: Theme.of(context).errorColor,
-                onPressed: () => _removeItem(_userTransactions[index].id),
-              ),
             ),
-          );
+            title: Text(
+              _userTransactions[index].title,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            subtitle: Text(
+              DateFormat.yMMMd().format(_userTransactions[index].date)
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.delete
+              ),
+              color: Theme.of(context).errorColor,
+              onPressed: () => _removeItem(_userTransactions[index].id),
+            ),
+          ),
+        );
 //          return Card(
 //              child: Row(
 //                children: [
@@ -114,8 +115,7 @@ class TransactionList extends StatelessWidget {
 //                ],
 //              )
 //          );
-        },
-      ),
+      },
     );
   }
 }
